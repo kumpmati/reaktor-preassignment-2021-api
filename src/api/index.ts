@@ -1,9 +1,14 @@
-import { Category } from "../types";
-import { fetchProductsByCategory } from "./fetcher";
+import { Router } from "express";
+import productsHandler from "./products";
 
 /**
- * Returns parsed product data based on category
+ * API endpoint router
+ * URL: /api
+ * e.g. /products/:category ==> /api/products/:category
  */
-export const getProducts = async (category: Category) => {
-  fetchProductsByCategory(category);
-};
+export const apiRoutes = Router();
+
+/**
+ * Returns all available products in a category
+ */
+apiRoutes.use("/products/:category?", productsHandler); // api/products/:category

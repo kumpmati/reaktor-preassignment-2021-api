@@ -1,5 +1,6 @@
-import { createServer, Server } from "http";
-import { requestListener } from "./listener";
+import express from "express";
+import { Server } from "http";
+import { apiRoutes } from "../api";
 
 /**
  * Starts the server
@@ -8,7 +9,7 @@ import { requestListener } from "./listener";
 export const start = (): Server => {
   const PORT = +process.env.PORT || 9000;
 
-  const server = createServer(requestListener);
-  server.listen(PORT, () => console.log("listening on port", PORT));
-  return server;
+  const app = express();
+  app.use("/api", apiRoutes);
+  return app.listen(PORT, () => console.log("running on port", PORT));
 };

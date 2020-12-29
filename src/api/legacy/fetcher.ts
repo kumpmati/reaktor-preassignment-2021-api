@@ -1,10 +1,10 @@
 import fetch from "node-fetch";
-import { API_URL } from "../config";
+import { API_URL } from "../../config";
 import {
   Category,
   LegacyAvailabilityResponse,
   LegacyProductsResponse,
-} from "../types";
+} from "../../types";
 
 export const productsEndpointURL = (c: Category) => `${API_URL}/products/${c}`;
 export const availabilityEndpointURL = (m: string) =>
@@ -34,14 +34,14 @@ export const fetchProductsByCategory = async (
 export const fetchAvailabilityByManufacturer = async (
   manufacturer: string
 ): Promise<LegacyAvailabilityResponse> => {
-  try {
-    const availabilities = await (
-      await fetch(availabilityEndpointURL(manufacturer))
-    ).json();
+  const availabilities: LegacyAvailabilityResponse = await (
+    await fetch(availabilityEndpointURL(manufacturer))
+  ).json();
 
-    // TODO: validity checking
-    return availabilities;
-  } catch (err) {
-    console.error("ERROR fetching availabilities", err);
+  if (typeof availabilities.response === "string") {
+    throw new Error("Legacy API error");
   }
+
+  // TODO: validity checking
+  return availabilities;
 };
