@@ -7,3 +7,6 @@ export const promiseAll = async <T>(arr: Promise<T>[]) =>
   (await Promise.allSettled(arr)).map(item =>
     item.status === "fulfilled" ? item.value : null
   );
+
+export const sleep = async (ms: number) =>
+  new Promise(resolve => setTimeout(resolve, ms));

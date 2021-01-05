@@ -11,7 +11,7 @@
   {
     "id": "1g",
     "type": "gloves",
-    "name": "red beanie",
+    "name": "red gloves",
     "color": ["red"],
     "price": 10,
     "manufacturer": "adidas",
@@ -20,7 +20,7 @@
   {
     "id": "2g",
     "type": "gloves",
-    "name": "cool beanie",
+    "name": "cool gloves",
     "color": [],
     "price": 50,
     "manufacturer": "adidas",

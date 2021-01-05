@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { ApiResponse } from "../types";
-import { isCategory } from "../util";
+import { isCategory, sleep } from "../util";
 import { mockResponses } from "./response";
 
 /**
@@ -19,7 +19,7 @@ export const mockApiRoutes = Router();
  * Returns all available products in a category
  * URL: /api/products/:category?
  */
-mockApiRoutes.use("/products/:category?", (req, res) => {
+mockApiRoutes.use("/products/:category?", async (req, res) => {
   const { category } = req.params;
 
   if (!isCategory(category)) {
@@ -38,5 +38,6 @@ mockApiRoutes.use("/products/:category?", (req, res) => {
     response: mockResponses[category],
   };
 
+  await sleep(250);
   res.end(JSON.stringify(mockResponse));
 });
