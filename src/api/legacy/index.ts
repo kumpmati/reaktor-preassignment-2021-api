@@ -1,4 +1,4 @@
-import { Category } from "../../types";
+import { Category, Product } from "../../types";
 import { promiseAll } from "../../util";
 import {
   fetchAvailabilityByManufacturer,
@@ -9,7 +9,7 @@ import { parseLegacyApiData } from "./parser";
 /**
  * Returns parsed product data based on category
  */
-export const getProducts = async (category: Category) => {
+export const getProducts = async (category: Category): Promise<Product[]> => {
   const products = await fetchProductsByCategory(category);
 
   const manufacturers = [...new Set(products.map(p => p.manufacturer))]; // remove duplicates

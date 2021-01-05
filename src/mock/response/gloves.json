@@ -1,0 +1,29 @@
+[
+  {
+    "id": "0g",
+    "type": "gloves",
+    "name": "normal gloves",
+    "color": ["white", "black"],
+    "price": 5,
+    "manufacturer": "test",
+    "availability": "instock"
+  },
+  {
+    "id": "1g",
+    "type": "gloves",
+    "name": "red beanie",
+    "color": ["red"],
+    "price": 10,
+    "manufacturer": "adidas",
+    "availability": "lessthan10"
+  },
+  {
+    "id": "2g",
+    "type": "gloves",
+    "name": "cool beanie",
+    "color": [],
+    "price": 50,
+    "manufacturer": "adidas",
+    "availability": "outofstock"
+  }
+]

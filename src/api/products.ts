@@ -1,4 +1,5 @@
 import { RequestHandler } from "express";
+import { ApiResponse } from "../types";
 import { isCategory } from "../util";
 import { getProducts } from "./legacy";
 
@@ -8,31 +9,26 @@ import { getProducts } from "./legacy";
  * @param req
  * @param res
  */
-const productsListener: RequestHandler = async (req, res) => {
+const productsHandler: RequestHandler = async (req, res) => {
   const { category } = req.params;
-  if (!category) {
-    res.writeHead(400);
-    return res.end(
-      JSON.stringify({
-        code: "400",
-        error: "Bad Request",
-        reason: "category is required",
-      })
-    );
-  }
 
   if (!isCategory(category)) {
     res.writeHead(400);
-    return res.end(
-      JSON.stringify({
-        code: "400",
-        error: "Bad Request",
-        reason: "invalid category",
-      })
-    );
+    const response: ApiResponse = {
+      success: false,
+      error: "Invalid category",
+      response: null,
+    };
+
+    return res.end(JSON.stringify(response));
   }
 
-  const products = JSON.stringify(await getProducts(category));
-  res.end(products);
+  try {
+    const products = await getProducts(category);
+    res.end(JSON.stringify(products));
+  } catch (err) {
+    console.error(err);
+  }
 };
-export default productsListener;
+
+export default productsHandler;

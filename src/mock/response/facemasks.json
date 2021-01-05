@@ -1,0 +1,29 @@
+[
+  {
+    "id": "0f",
+    "type": "facemasks",
+    "name": "normal facemask",
+    "color": ["white", "black"],
+    "price": 5,
+    "manufacturer": "test",
+    "availability": "instock"
+  },
+  {
+    "id": "1f",
+    "type": "facemasks",
+    "name": "red facemask",
+    "color": ["red"],
+    "price": 10,
+    "manufacturer": "adidas",
+    "availability": "lessthan10"
+  },
+  {
+    "id": "2f",
+    "type": "facemasks",
+    "name": "cool facemask",
+    "color": [],
+    "price": 50,
+    "manufacturer": "adidas",
+    "availability": "outofstock"
+  }
+]

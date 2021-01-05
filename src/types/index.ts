@@ -1,3 +1,8 @@
+export type Config = {
+  development?: boolean;
+  port: number;
+};
+
 export enum Category {
   Beanies = "beanies",
   Facemasks = "facemasks",
@@ -12,6 +17,12 @@ export type Product = {
   price: number;
   manufacturer: string;
   availability: string;
+};
+
+export type ApiResponse = {
+  success: boolean;
+  response: Product[];
+  error?: string;
 };
 
 /**
