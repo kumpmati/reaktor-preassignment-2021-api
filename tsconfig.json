@@ -10,7 +10,6 @@
     "downlevelIteration": true,
     "lib": ["ES2020"],
     "sourceRoot": "src/",
-    "outDir": "out/",
-    "watch": true
+    "outDir": "out/"
   }
 }

@@ -5,6 +5,7 @@
   "main": "out/index.js",
   "scripts": {
     "start": "node out/index.js",
+    "dev": "tsc -w",
     "build": "tsc",
     "postinstall": "npm run build"
   },
