@@ -1,5 +1,6 @@
 export type Config = {
   development?: boolean;
+  mock?: boolean;
   port: number;
 };
 
@@ -26,7 +27,7 @@ export type ApiResponse = {
 };
 
 /**
- * Format of a successful response from the legacy API endpoint /v2/products/:category
+ * Response from the legacy API endpoint /v2/products/:category
  */
 export type LegacyProductsResponse = LegacyProduct[];
 export type LegacyProduct = {
@@ -39,7 +40,7 @@ export type LegacyProduct = {
 };
 
 /**
- * Format of a successful response from the legacy API endpoint /v2/availability/:manufacturer
+ * Response from the legacy API endpoint /v2/availability/:manufacturer
  */
 export type LegacyAvailabilityResponse = {
   code: number;

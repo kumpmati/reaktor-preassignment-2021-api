@@ -1,17 +1,16 @@
 import express from "express";
-import cors from "cors";
+import cors, { CorsOptions } from "cors";
 import { Server } from "http";
 import { apiRoutes } from "../api";
 import { mockApiRoutes } from "../mock/api";
 import { Config } from "../types";
+import { startBackgroundFetch } from "./fetcher";
+import { productsCache } from "../api/products";
 
-/**
- * domains allowed to use API
- */
-const allowedOrigins: RegExp[] = [
-  /localhost/,
-  /reaktor-preassignment.netlify.app/,
-];
+const allowedOrigins: RegExp[] = [/localhost/, /reaktor-preassignment.netlify.app/];
+const corsOptions: CorsOptions = {
+  origin: allowedOrigins,
+};
 
 /**
  * Starts the server
@@ -19,16 +18,12 @@ const allowedOrigins: RegExp[] = [
  */
 export const start = (config: Config = { port: 9000 }): Server => {
   if (config.development) console.warn("WARNING: running in development mode");
+
   const app = express();
 
-  app.use(
-    cors({
-      origin: allowedOrigins,
-    })
-  );
-  app.use("/api", config.development ? mockApiRoutes : apiRoutes);
+  app.use(cors(corsOptions));
+  app.use("/api", config.mock ? mockApiRoutes : apiRoutes);
+  startBackgroundFetch(60 * 1000, productsCache, true);
 
-  return app.listen(config.port, () =>
-    console.log("running on port", config.port)
-  );
+  return app.listen(config.port, () => console.log("running on port", config.port));
 };

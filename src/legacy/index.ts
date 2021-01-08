@@ -1,15 +1,13 @@
-import { Category, Product } from "../../types";
-import { promiseAll } from "../../util";
-import {
-  fetchAvailabilityByManufacturer,
-  fetchProductsByCategory,
-} from "./fetcher";
+import { Category, Product } from "../types";
+import { promiseAll } from "../util";
+import { fetchAvailabilityByManufacturer, fetchProductsByCategory } from "./fetcher";
 import { parseLegacyApiData } from "./parser";
 
 /**
  * Returns parsed product data based on category
  */
-export const getProducts = async (category: Category): Promise<Product[]> => {
+export const getLegacyProducts = async (category: Category): Promise<Product[]> => {
+  console.log("querying legacy API for", category);
   const products = await fetchProductsByCategory(category);
 
   const manufacturers = [...new Set(products.map(p => p.manufacturer))]; // remove duplicates
@@ -19,7 +17,9 @@ export const getProducts = async (category: Category): Promise<Product[]> => {
       while (i-- >= 0) {
         try {
           return await fetchAvailabilityByManufacturer(m);
-        } catch {}
+        } catch {
+          console.log(`failed to get availability for ${m}, retrying...`);
+        }
       }
     })
   );

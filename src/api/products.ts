@@ -1,7 +1,11 @@
 import { RequestHandler } from "express";
-import { ApiResponse } from "../types";
+import { ApiResponse, Category } from "../types";
 import { isCategory } from "../util";
-import { getProducts } from "./legacy";
+
+/**
+ * Cache for the /api/products/:category? API endpoint
+ */
+export const productsCache = new Map<Category, ApiResponse>();
 
 /**
  * Returns all available products in a category
@@ -24,8 +28,8 @@ const productsHandler: RequestHandler = async (req, res) => {
   }
 
   try {
-    const products = await getProducts(category);
-    res.end(JSON.stringify(products));
+    const response = productsCache.get(category); // get response from cache
+    res.end(JSON.stringify(response));
   } catch (err) {
     console.error(err);
   }

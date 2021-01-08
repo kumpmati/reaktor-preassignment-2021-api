@@ -1,14 +1,9 @@
 import fetch from "node-fetch";
-import { API_URL } from "../../config";
-import {
-  Category,
-  LegacyAvailabilityResponse,
-  LegacyProductsResponse,
-} from "../../types";
+import { API_URL } from "../config";
+import { Category, LegacyAvailabilityResponse, LegacyProductsResponse } from "../types";
 
 export const productsEndpointURL = (c: Category) => `${API_URL}/products/${c}`;
-export const availabilityEndpointURL = (m: string) =>
-  `${API_URL}/availability/${m}`;
+export const availabilityEndpointURL = (m: string) => `${API_URL}/availability/${m}`;
 
 /**
  * Fetches product data from the legacy API endpoint /v2/products/:category

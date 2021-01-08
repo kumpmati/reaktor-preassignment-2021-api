@@ -7,8 +7,4 @@ import productsHandler from "./products";
  */
 export const apiRoutes = Router();
 
-/**
- * Returns all available products in a category
- * URL: /api/products/:category?
- */
 apiRoutes.use("/products/:category?", productsHandler);

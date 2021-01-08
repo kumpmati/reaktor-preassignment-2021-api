@@ -1,5 +1,3 @@
-import { Category } from "../types";
-
 /**
  * Legacy API URL
  */
