@@ -23,6 +23,8 @@ export const startBackgroundFetch = async (
 
     const products = parseLegacyApiData(legacyProducts, availabilities);
 
+    cache.clear();
+
     for (const product of products) {
       if (!cache.has(product.type))
         cache.set(product.type, {
