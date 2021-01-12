@@ -21,7 +21,7 @@ export const start = (config: Config = { port: 9000 }): Server => {
 
   const app = express();
 
-  app.use(cors(corsOptions));
+  app.use(cors());
   app.use("/api", config.mock ? mockApiRoutes : apiRoutes);
   startBackgroundFetch(2 * 60 * 1000, productsCache, true);
 
