@@ -47,8 +47,8 @@ export const getLegacyAvailabilitiesStream = (manufacturers: string[]): EventEmi
           const response = await fetchAvailabilities(m);
           emitter.emit("data", response.response);
           break;
-        } catch (err) {
-          console.log("erroria");
+        } catch {
+          console.log("error while fetching", m);
         }
       }
     })();
