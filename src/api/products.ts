@@ -24,15 +24,17 @@ const productsHandler: RequestHandler = async (req, res) => {
       response: null,
     };
 
-    return res.end(JSON.stringify(response));
+    return res.json(response);
   }
 
-  try {
-    const response = productsCache.get(category); // get response from cache
-    res.end(JSON.stringify(response));
-  } catch (err) {
-    console.error(err);
-  }
+  const response = productsCache.get(category);
+  if (response) return res.json(response);
+
+  res.json({
+    success: false,
+    error: "Cache not ready",
+    response: null,
+  });
 };
 
 export default productsHandler;

@@ -1,6 +1,10 @@
 import fetch from "node-fetch";
-import { API_URL } from "../config";
-import { Category, LegacyAvailabilityResponse, LegacyProductsResponse } from "../types";
+import { API_URL } from "../../config";
+import {
+  Category,
+  LegacyAvailabilityResponse,
+  LegacyProductsResponse,
+} from "../../types";
 
 export const productsEndpointURL = (c: Category) => `${API_URL}/products/${c}`;
 export const availabilityEndpointURL = (m: string) => `${API_URL}/availability/${m}`;
@@ -9,24 +13,20 @@ export const availabilityEndpointURL = (m: string) => `${API_URL}/availability/$
  * Fetches product data from the legacy API endpoint /v2/products/:category
  * @param {Category} category Category of products to fetch
  */
-export const fetchProductsByCategory = async (
+export const fetchProducts = async (
   category: Category
 ): Promise<LegacyProductsResponse> => {
-  try {
-    const products = await (await fetch(productsEndpointURL(category))).json();
+  const response = await (await fetch(productsEndpointURL(category))).json();
 
-    // TODO: validity checking
-    return products;
-  } catch (err) {
-    console.error("ERROR fetching products", err);
-  }
+  // TODO: validity checking
+  return response;
 };
 
 /**
  * Fetches availability data from the legacy API endpoint /v2/availability/:manufacturer
  * @param manufacturer
  */
-export const fetchAvailabilityByManufacturer = async (
+export const fetchAvailabilities = async (
   manufacturer: string
 ): Promise<LegacyAvailabilityResponse> => {
   const availabilities: LegacyAvailabilityResponse = await (
@@ -37,6 +37,5 @@ export const fetchAvailabilityByManufacturer = async (
     throw new Error("Legacy API error");
   }
 
-  // TODO: validity checking
   return availabilities;
 };

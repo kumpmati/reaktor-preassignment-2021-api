@@ -4,10 +4,10 @@ import { Server } from "http";
 import { apiRoutes } from "../api";
 import { mockApiRoutes } from "../mock/api";
 import { Config } from "../types";
-import { startBackgroundFetch } from "./fetcher";
+import { startBackgroundFetch } from "../service/fetch";
 import { productsCache } from "../api/products";
 
-const allowedOrigins: RegExp[] = [/localhost/, /reaktor-preassignment.netlify.app/];
+const allowedOrigins: RegExp[] = [/localhost/, /reaktor-preassignment.netlify.app\/\*/];
 const corsOptions: CorsOptions = {
   origin: allowedOrigins,
 };
@@ -23,7 +23,7 @@ export const start = (config: Config = { port: 9000 }): Server => {
 
   app.use(cors(corsOptions));
   app.use("/api", config.mock ? mockApiRoutes : apiRoutes);
-  startBackgroundFetch(60 * 1000, productsCache, true);
+  startBackgroundFetch(2 * 60 * 1000, productsCache, true);
 
   return app.listen(config.port, () => console.log("running on port", config.port));
 };

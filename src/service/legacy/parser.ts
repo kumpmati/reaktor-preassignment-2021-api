@@ -1,11 +1,10 @@
 import {
-  LegacyAvailabilityResponse,
   LegacyProduct,
   LegacyProductAvailability,
   LegacyProductsResponse,
   Product,
-} from "../types";
-import { isCategory } from "../util";
+} from "../../types";
+import { isCategory } from "../../util";
 
 const inStockRegex = /<INSTOCKVALUE>(.*)<\/INSTOCKVALUE>/;
 
@@ -33,8 +32,8 @@ const findProductAvailability = (
  */
 export const parseLegacyApiData = (
   products: LegacyProductsResponse,
-  availabilities: LegacyAvailabilityResponse[]
+  availabilities: LegacyProductAvailability[]
 ): Product[] => {
-  const avs = availabilities.map(a => a.response).flat(1);
+  const avs = availabilities.flat(1);
   return products.map(product => findProductAvailability(product, avs));
 };
