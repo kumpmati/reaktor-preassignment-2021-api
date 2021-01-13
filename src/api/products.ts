@@ -17,9 +17,7 @@ const productsHandler: RequestHandler = async (req, res) => {
   const { category } = req.params;
 
   if (!isCategory(category)) {
-    res.writeHead(400);
     const response: ApiResponse = {
-      success: false,
       error: "Invalid category",
       response: null,
     };
@@ -31,7 +29,6 @@ const productsHandler: RequestHandler = async (req, res) => {
   if (response) return res.json(response);
 
   res.json({
-    success: false,
     error: "Cache not ready",
     response: null,
   });

@@ -8,15 +8,19 @@ import { isCategory } from "../../util";
 
 const inStockRegex = /<INSTOCKVALUE>(.*)<\/INSTOCKVALUE>/;
 
+const parseStatusFromPayload = (payload: string) => {
+  const status = payload.replace("\n", "").match(inStockRegex);
+  return status ? status[1].toLocaleLowerCase() : "";
+};
+
 const findProductAvailability = (
   product: LegacyProduct,
-  availabilities: LegacyProductAvailability[]
+  availabilities: Map<string, string>
 ) => {
   const type = isCategory(product.type) ? product.type : null;
+  const availability = availabilities.get(product.id);
 
-  const status = availabilities.find(a => a.id.toLowerCase() === product.id);
-  const match = status?.DATAPAYLOAD?.replace("\n", "").match(inStockRegex);
-  const availability = match ? match[1].toLowerCase() : "";
+  if (!availability) console.log("no availability for", product.id);
 
   return {
     ...product,
@@ -34,6 +38,9 @@ export const parseLegacyApiData = (
   products: LegacyProductsResponse,
   availabilities: LegacyProductAvailability[]
 ): Product[] => {
-  const avs = availabilities.flat(1);
-  return products.map(product => findProductAvailability(product, avs));
+  const statuses = new Map<string, string>(
+    availabilities.map(a => [a.id.toLowerCase(), parseStatusFromPayload(a.DATAPAYLOAD)])
+  );
+
+  return products.map(product => findProductAvailability(product, statuses));
 };

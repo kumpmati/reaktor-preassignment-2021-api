@@ -21,9 +21,8 @@ export type Product = {
 };
 
 export type ApiResponse = {
-  success: boolean;
-  response: Product[];
   error?: string;
+  response: Product[];
 };
 
 /**

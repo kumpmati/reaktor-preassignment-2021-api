@@ -1,7 +1,32 @@
 import { getLegacyAvailabilities, getLegacyProducts } from "./legacy";
-import { ApiResponse, Category } from "../types";
+import { ApiResponse, Category, Product } from "../types";
 import { uniqueArr } from "../util";
 import { parseLegacyApiData } from "./legacy/parser";
+
+const updateCache = (cache: Map<Category, ApiResponse>, products: Product[]) => {
+  const beanies = [];
+  const facemasks = [];
+  const gloves = [];
+
+  for (const product of products) {
+    switch (product.type) {
+      case Category.Beanies:
+        beanies.push(product);
+        break;
+      case Category.Facemasks:
+        facemasks.push(product);
+        break;
+      case Category.Gloves:
+        gloves.push(product);
+        break;
+    }
+  }
+
+  cache.clear();
+  cache.set(Category.Beanies, { response: beanies });
+  cache.set(Category.Facemasks, { response: facemasks });
+  cache.set(Category.Gloves, { response: gloves });
+};
 
 /**
  * Starts periodically fetching from the legacy API and caching the results
@@ -16,6 +41,7 @@ export const startBackgroundFetch = async (
 
   const task = async () => {
     console.log("fetching new data");
+    const startTime = process.hrtime();
     const legacyProducts = await getLegacyProducts();
 
     const manufacturers = uniqueArr(legacyProducts.map(p => p.manufacturer));
@@ -23,22 +49,11 @@ export const startBackgroundFetch = async (
 
     const products = parseLegacyApiData(legacyProducts, availabilities);
 
-    cache.clear();
-
-    for (const product of products) {
-      if (!cache.has(product.type))
-        cache.set(product.type, {
-          success: true,
-          response: [],
-        });
-
-      const r = cache.get(product.type);
-      if (r) {
-        r.response.push(product);
-      }
-    }
-
-    console.log("finished fetching new data");
+    updateCache(cache, products);
+    const endTime = process.hrtime(startTime);
+    console.info(
+      `finished fetching, took ${endTime[0]}s ${endTime[1] / 1000000} ms to process`
+    );
   };
 
   if (immediate) task();

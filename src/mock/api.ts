@@ -25,7 +25,6 @@ mockApiRoutes.use("/products/:category?", async (req, res) => {
   if (!isCategory(category)) {
     res.writeHead(400);
     const response: ApiResponse = {
-      success: false,
       error: "Invalid category",
       response: null,
     };
@@ -34,7 +33,6 @@ mockApiRoutes.use("/products/:category?", async (req, res) => {
   }
 
   const mockResponse: ApiResponse = {
-    success: true,
     response: mockResponses[category],
   };
 
