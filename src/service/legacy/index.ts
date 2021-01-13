@@ -1,7 +1,6 @@
-import { EventEmitter } from "events";
 import { Category, LegacyProduct, LegacyProductAvailability } from "../../types";
-import { promiseAll } from "../../util";
 import { fetchAvailabilities, fetchProducts } from "./fetcher";
+import { promiseAll } from "../../util";
 
 /**
  * Returns the products for all the available categories
@@ -26,7 +25,7 @@ export const getLegacyAvailabilities = async (
         try {
           return await fetchAvailabilities(m);
         } catch (err) {
-          console.log("erroria");
+          console.log(` - error while fetching ${m}, retrying... (${5 - i})`);
         }
       }
     })
@@ -34,25 +33,4 @@ export const getLegacyAvailabilities = async (
 
   const availabilities = responses.map(r => r.response).flat(1);
   return availabilities;
-};
-
-export const getLegacyAvailabilitiesStream = (manufacturers: string[]): EventEmitter => {
-  const emitter = new EventEmitter();
-
-  for (const m of manufacturers) {
-    (async () => {
-      let i = 5;
-      while (i-- > 0) {
-        try {
-          const response = await fetchAvailabilities(m);
-          emitter.emit("data", response.response);
-          break;
-        } catch {
-          console.log("error while fetching", m);
-        }
-      }
-    })();
-  }
-
-  return emitter;
 };

@@ -1,13 +1,10 @@
 import fetch from "node-fetch";
-import { API_URL } from "../../config";
+import { API_URL, AVAILABILITY_ENDPOINT, PRODUCTS_ENDPOINT } from "../../config";
 import {
   Category,
   LegacyAvailabilityResponse,
   LegacyProductsResponse,
 } from "../../types";
-
-export const productsEndpointURL = (c: Category) => `${API_URL}/products/${c}`;
-export const availabilityEndpointURL = (m: string) => `${API_URL}/availability/${m}`;
 
 /**
  * Fetches product data from the legacy API endpoint /v2/products/:category
@@ -16,7 +13,7 @@ export const availabilityEndpointURL = (m: string) => `${API_URL}/availability/$
 export const fetchProducts = async (
   category: Category
 ): Promise<LegacyProductsResponse> => {
-  const response = await (await fetch(productsEndpointURL(category))).json();
+  const response = await (await fetch(PRODUCTS_ENDPOINT(category))).json();
 
   // TODO: validity checking
   return response;
@@ -29,9 +26,7 @@ export const fetchProducts = async (
 export const fetchAvailabilities = async (
   manufacturer: string
 ): Promise<LegacyAvailabilityResponse> => {
-  const availabilities: LegacyAvailabilityResponse = await (
-    await fetch(availabilityEndpointURL(manufacturer))
-  ).json();
+  const availabilities = await (await fetch(AVAILABILITY_ENDPOINT(manufacturer))).json();
 
   if (typeof availabilities.response === "string") {
     throw new Error("Legacy API error");

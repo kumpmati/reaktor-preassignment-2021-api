@@ -1,5 +1,5 @@
 import { getLegacyAvailabilities, getLegacyProducts } from "./legacy";
-import { ApiResponse, Category, Product } from "../types";
+import { ApiResponse, BackgroundFetchOptions, Category, Product } from "../types";
 import { uniqueArr } from "../util";
 import { parseLegacyApiData } from "./legacy/parser";
 
@@ -32,11 +32,11 @@ const updateCache = (cache: Map<Category, ApiResponse>, products: Product[]) => 
  * Starts periodically fetching from the legacy API and caching the results
  * @param interval number of milliseconds between fetch attempts
  */
-export const startBackgroundFetch = async (
-  interval: number,
-  cache: Map<Category, ApiResponse>,
-  immediate?: boolean
-) => {
+export const startBackgroundFetch = async ({
+  interval,
+  cache,
+  immediate,
+}: BackgroundFetchOptions) => {
   console.log("started background fetch service");
 
   const task = async () => {
@@ -48,12 +48,10 @@ export const startBackgroundFetch = async (
     const availabilities = await getLegacyAvailabilities(manufacturers);
 
     const products = parseLegacyApiData(legacyProducts, availabilities);
-
     updateCache(cache, products);
+
     const endTime = process.hrtime(startTime);
-    console.info(
-      `finished fetching, took ${endTime[0]}s ${endTime[1] / 1000000} ms to process`
-    );
+    console.info(`finished fetching, took ${endTime[0]}s ${endTime[1] / 1000000} ms`);
   };
 
   if (immediate) task();

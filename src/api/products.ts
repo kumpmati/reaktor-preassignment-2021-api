@@ -21,17 +21,18 @@ const productsHandler: RequestHandler = async (req, res) => {
       error: "Invalid category",
       response: null,
     };
-
     return res.json(response);
   }
 
   const response = productsCache.get(category);
-  if (response) return res.json(response);
+  if (!response) {
+    return res.json({
+      error: "Server is starting...",
+      response: null,
+    });
+  }
 
-  res.json({
-    error: "Cache not ready",
-    response: null,
-  });
+  res.json(response);
 };
 
 export default productsHandler;

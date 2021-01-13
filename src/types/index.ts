@@ -49,3 +49,9 @@ export type LegacyProductAvailability = {
   id: string;
   DATAPAYLOAD: string;
 };
+
+export type BackgroundFetchOptions = {
+  interval: number;
+  cache: Map<Category, ApiResponse>;
+  immediate?: boolean;
+};
