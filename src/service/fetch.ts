@@ -36,6 +36,7 @@ export const startBackgroundFetch = async ({
   interval,
   cache,
   immediate,
+  broadcast,
 }: BackgroundFetchOptions) => {
   console.log("started background fetch service");
 
@@ -51,7 +52,8 @@ export const startBackgroundFetch = async ({
     updateCache(cache, products);
 
     const endTime = process.hrtime(startTime);
-    console.info(`finished fetching, took ${endTime[0]}s ${endTime[1] / 1000000} ms`);
+    console.info(`done fetching, took ${endTime[0]}s ${endTime[1] / 1000000} ms`);
+    broadcast("cache_updated"); // notify WS clients of new data
   };
 
   if (immediate) task();

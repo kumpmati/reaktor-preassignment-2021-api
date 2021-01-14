@@ -1,29 +1,27 @@
-import express from "express";
-import cors, { CorsOptions } from "cors";
 import { Server } from "http";
-import { apiRoutes } from "../api";
-import { mockApiRoutes } from "../mock/api";
 import { Config } from "../types";
 import { startBackgroundFetch } from "../service/fetch";
 import { productsCache } from "../api/products";
+import { DEFAULT_CONFIG } from "../config";
+import { startExpress } from "./express";
+import { startWebSocketServer } from "./websocket";
 
 /**
  * Starts the server
  * @returns {Server}
  */
-export const start = (config: Config = { port: 9000 }): Server => {
+export const start = (config: Config = DEFAULT_CONFIG): Server => {
   if (config.development) console.warn("WARNING: running in development mode");
 
-  const app = express();
-
-  app.use(cors());
-  app.use("/api", config.mock ? mockApiRoutes : apiRoutes);
+  const app = startExpress(config);
+  const { broadcast } = startWebSocketServer(app);
 
   startBackgroundFetch({
+    broadcast,
     interval: 2 * 60 * 1000,
     cache: productsCache,
     immediate: true,
   });
 
-  return app.listen(config.port, () => console.log("running on port", config.port));
+  return app;
 };

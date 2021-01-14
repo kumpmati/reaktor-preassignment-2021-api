@@ -54,4 +54,5 @@ export type BackgroundFetchOptions = {
   interval: number;
   cache: Map<Category, ApiResponse>;
   immediate?: boolean;
+  broadcast: (event: string) => any;
 };

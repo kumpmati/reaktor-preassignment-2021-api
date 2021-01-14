@@ -1,4 +1,10 @@
-import { Category } from "../types";
+import { Category, Config } from "../types";
+
+export const DEFAULT_CONFIG: Config = {
+  port: 9000,
+  mock: false,
+  development: true,
+};
 
 export const API_URL = "https://bad-api-assignment.reaktor.com/v2";
 
