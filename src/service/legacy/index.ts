@@ -1,6 +1,7 @@
 import { Category, LegacyProduct, LegacyProductAvailability } from "../../types";
 import { fetchAvailabilities, fetchProducts } from "./fetcher";
 import { promiseAll } from "../../util";
+import { MAX_API_RETRIES } from "../../config";
 
 /**
  * Returns the products for all the available categories
@@ -20,7 +21,7 @@ export const getLegacyAvailabilities = async (
 ): Promise<LegacyProductAvailability[]> => {
   const responses = await promiseAll(
     manufacturers.map(async m => {
-      let i = 5;
+      let i = MAX_API_RETRIES;
       while (i-- > 0) {
         try {
           return await fetchAvailabilities(m);

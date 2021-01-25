@@ -1,5 +1,5 @@
 import fetch from "node-fetch";
-import { API_URL, AVAILABILITY_ENDPOINT, PRODUCTS_ENDPOINT } from "../../config";
+import { AVAILABILITY_ENDPOINT, PRODUCTS_ENDPOINT } from "../../config";
 import {
   Category,
   LegacyAvailabilityResponse,
