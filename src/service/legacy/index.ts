@@ -26,7 +26,9 @@ export const getLegacyAvailabilities = async (
         try {
           return await fetchAvailabilities(m);
         } catch (err) {
-          console.log(` - error while fetching ${m}, retrying... (${5 - i})`);
+          console.log(
+            ` - error while fetching ${m}, retrying... (${MAX_API_RETRIES - i})`
+          );
         }
       }
     })
