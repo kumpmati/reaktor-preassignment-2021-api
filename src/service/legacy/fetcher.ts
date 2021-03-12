@@ -1,5 +1,5 @@
 import fetch from "node-fetch";
-import { AVAILABILITY_ENDPOINT, PRODUCTS_ENDPOINT } from "../../config";
+import { availabilityEndpoint, productsEndpoint } from "../../config";
 import {
   Category,
   LegacyAvailabilityResponse,
@@ -13,7 +13,7 @@ import {
 export const fetchProducts = async (
   category: Category
 ): Promise<LegacyProductsResponse> => {
-  const response = await (await fetch(PRODUCTS_ENDPOINT(category))).json();
+  const response = await (await fetch(productsEndpoint(category))).json();
 
   // TODO: validity checking
   return response;
@@ -26,7 +26,7 @@ export const fetchProducts = async (
 export const fetchAvailabilities = async (
   manufacturer: string
 ): Promise<LegacyAvailabilityResponse> => {
-  const availabilities = await (await fetch(AVAILABILITY_ENDPOINT(manufacturer))).json();
+  const availabilities = await (await fetch(availabilityEndpoint(manufacturer))).json();
 
   if (typeof availabilities.response === "string") {
     throw new Error("Legacy API error");

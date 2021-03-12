@@ -21,19 +21,16 @@ export const getLegacyAvailabilities = async (
 ): Promise<LegacyProductAvailability[]> => {
   const responses = await promiseAll(
     manufacturers.map(async m => {
-      let i = MAX_API_RETRIES;
-      while (i-- > 0) {
+      for (let i = 1; i <= MAX_API_RETRIES; i++) {
         try {
           return await fetchAvailabilities(m);
         } catch (err) {
-          console.log(
-            ` - error while fetching ${m}, retrying... (${MAX_API_RETRIES - i})`
-          );
+          console.log(` - error while fetching ${m}, retrying... (${i})`);
         }
       }
     })
   );
 
-  const availabilities = responses.map(r => r.response).flat(1);
+  const availabilities = responses.map(r => r?.response).flat(1);
   return availabilities;
 };

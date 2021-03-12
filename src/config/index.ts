@@ -12,5 +12,5 @@ export const STATUS_REGEX = /<INSTOCKVALUE>(.*)<\/INSTOCKVALUE>/;
 
 export const MAX_API_RETRIES = 7;
 
-export const PRODUCTS_ENDPOINT = (c: Category) => `${API_URL}/products/${c}`;
-export const AVAILABILITY_ENDPOINT = (m: string) => `${API_URL}/availability/${m}`;
+export const productsEndpoint = (c: Category) => `${API_URL}/products/${c}`;
+export const availabilityEndpoint = (m: string) => `${API_URL}/availability/${m}`;
